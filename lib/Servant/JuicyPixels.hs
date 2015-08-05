@@ -1,10 +1,11 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DataKinds             #-}
+{-# LANGUAGE KindSignatures        #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE TypeOperators         #-}
+
 module Servant.JuicyPixels where
 
 import Servant.API
@@ -14,6 +15,7 @@ import Codec.Picture
 import Codec.Picture.Saving
 import Data.Proxy
 import qualified Data.ByteString.Lazy as BL
+
 
 data BMP
 
@@ -27,7 +29,6 @@ instance MimeUnrender BMP DynamicImage where
     mimeUnrender _ = decodeBitmap . BL.toStrict
 
 
-
 data GIF
 
 instance Accept GIF where
@@ -38,7 +39,6 @@ instance MimeRender GIF DynamicImage where
 
 instance MimeUnrender GIF DynamicImage where
     mimeUnrender _ = decodeGif . BL.toStrict
-
 
 
 data JPEG (quality :: Nat)
@@ -55,18 +55,6 @@ instance (KnownNat quality, quality <= 100) => MimeUnrender (JPEG quality) Dynam
     mimeUnrender _ = decodeJpeg . BL.toStrict
 
 
-
-instance Accept JPEG where
-    contentType _ = "image" M.// "jpeg"
-
-instance MimeRender JPEG DynamicImage where
-    mimeRender _ img = imageToJpg 50 img
-
-instance MimeUnrender JPEG DynamicImage where
-    mimeUnrender _ = decodeJpeg . BL.toStrict
-
-
-
 data PNG
 
 instance Accept PNG where
@@ -79,7 +67,6 @@ instance MimeUnrender PNG DynamicImage where
     mimeUnrender _ = decodePng . BL.toStrict
 
 
-
 data TIFF
 
 instance Accept TIFF where
@@ -90,3 +77,15 @@ instance MimeRender TIFF DynamicImage where
 
 instance MimeUnrender TIFF DynamicImage where
     mimeUnrender _ = decodeTiff . BL.toStrict
+
+
+data RADIANCE
+
+instance Accept RADIANCE where
+    contentType _ = "image" M.// "vnd.radiance"
+
+instance MimeRender RADIANCE DynamicImage where
+    mimeRender _ = imageToRadiance
+
+instance MimeUnrender RADIANCE DynamicImage where
+    mimeUnrender _ = decodeHDR . BL.toStrict

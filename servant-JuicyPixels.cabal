@@ -11,10 +11,23 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Servant.JuicyPixels
-  build-depends:       base >=4.8 && <4.9
+  build-depends:       base >=4.7 && <4.9
                      , bytestring
                      , http-media
                      , JuicyPixels >=3.2
                      , servant >=0.4 && <0.5
   hs-source-dirs:      lib
   default-language:    Haskell2010
+
+executable image-conversion
+  main-is: image-conversion.hs
+  hs-source-dirs: examples
+  ghc-options: -Wall
+  default-language: Haskell2010
+  build-depends:       base
+                     , JuicyPixels
+                     , servant
+                     , servant-server
+                     , servant-JuicyPixels
+                     , warp
+                     , wai
