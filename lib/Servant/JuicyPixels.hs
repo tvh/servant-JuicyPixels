@@ -89,3 +89,15 @@ instance MimeRender RADIANCE DynamicImage where
 
 instance MimeUnrender RADIANCE DynamicImage where
     mimeUnrender _ = decodeHDR . BL.toStrict
+
+
+data TGA
+
+instance Accept TGA where
+    contentType _ = "image" M.// "x-targa"
+
+instance MimeRender TGA DynamicImage where
+    mimeRender _ = imageToTga
+
+instance MimeUnrender TGA DynamicImage where
+    mimeUnrender _ = decodeTga . BL.toStrict

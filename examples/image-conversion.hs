@@ -11,8 +11,8 @@ import Servant
 import Servant.JuicyPixels
 
 type ConversionApi
-     = ReqBody '[BMP, GIF, JPEG 50, PNG, TIFF, RADIANCE] DynamicImage
-    :> Post '[BMP, GIF, JPEG 50, PNG, TIFF, RADIANCE] DynamicImage
+     = ReqBody '[BMP, GIF, JPEG 50, PNG, TIFF, RADIANCE, TGA] DynamicImage
+    :> Post '[BMP, GIF, JPEG 50, PNG, TIFF, RADIANCE, TGA] DynamicImage
 
 conversionApi :: Proxy ConversionApi
 conversionApi = Proxy
