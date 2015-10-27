@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP                   #-}
 {-# LANGUAGE DataKinds             #-}
 {-# LANGUAGE KindSignatures        #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -90,7 +91,7 @@ instance MimeRender RADIANCE DynamicImage where
 instance MimeUnrender RADIANCE DynamicImage where
     mimeUnrender _ = decodeHDR . BL.toStrict
 
-
+#if MIN_VERSION_JuicyPixels(3,2,6)
 data TGA
 
 instance Accept TGA where
@@ -101,3 +102,4 @@ instance MimeRender TGA DynamicImage where
 
 instance MimeUnrender TGA DynamicImage where
     mimeUnrender _ = decodeTga . BL.toStrict
+#endif

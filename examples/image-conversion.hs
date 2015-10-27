@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeOperators #-}
 module Main where
@@ -10,9 +11,15 @@ import Network.Wai.Handler.Warp
 import Servant
 import Servant.JuicyPixels
 
+#if MIN_VERSION_JuicyPixels(3,2,6)
+type FORMATS = '[BMP, GIF, JPEG 50, PNG, TIFF, RADIANCE, TGA]
+#else
+type FORMATS = '[BMP, GIF, JPEG 50, PNG, TIFF, RADIANCE]
+#endif
+
 type ConversionApi
-     = ReqBody '[BMP, GIF, JPEG 50, PNG, TIFF, RADIANCE, TGA] DynamicImage
-    :> Post '[BMP, GIF, JPEG 50, PNG, TIFF, RADIANCE, TGA] DynamicImage
+     = ReqBody FORMATS DynamicImage
+    :> Post FORMATS DynamicImage
 
 conversionApi :: Proxy ConversionApi
 conversionApi = Proxy

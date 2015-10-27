@@ -20,7 +20,7 @@ library
   build-depends:       base >=4.7 && <4.9
                      , bytestring
                      , http-media
-                     , JuicyPixels >=3.2.6
+                     , JuicyPixels >=3.2.5.3
                      , servant >=0.4 && <0.5
   hs-source-dirs:      lib
   default-language:    Haskell2010
