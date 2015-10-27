@@ -8,8 +8,8 @@ maintainer:          tvh@tvholtz.de
 category:            Graphics
 build-type:          Simple
 cabal-version:       >=1.10
-synopsis:            servant-JuicyPixels
-description:         servant-JuicyPixels
+synopsis:            Servant support for JuicyPixels
+description:         Provides content types for image types supported by JuicyPixels
 tested-with:         GHC==7.8.4, GHC==7.10.2
 
 source-repository HEAD
