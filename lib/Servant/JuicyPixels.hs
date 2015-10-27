@@ -1,5 +1,6 @@
 {-# LANGUAGE CPP                   #-}
 {-# LANGUAGE DataKinds             #-}
+{-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE KindSignatures        #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
@@ -14,6 +15,7 @@ import GHC.TypeLits
 import qualified Network.HTTP.Media as M
 import Codec.Picture
 import Codec.Picture.Saving
+import Codec.Picture.Types
 import Data.Proxy
 import qualified Data.ByteString.Lazy as BL
 
@@ -52,6 +54,10 @@ instance (KnownNat quality, quality <= 100) => MimeRender (JPEG quality) Dynamic
       let quality = fromInteger $ natVal (Proxy :: Proxy quality)
       in imageToJpg quality img
 
+instance (KnownNat quality, quality <= 100, ColorSpaceConvertible a PixelYCbCr8) => MimeRender (JPEG quality) (Image a) where
+    mimeRender _ = encodeJpegAtQuality quality . convertImage
+      where quality = fromInteger $ natVal (Proxy :: Proxy quality)
+
 instance (KnownNat quality, quality <= 100) => MimeUnrender (JPEG quality) DynamicImage where
     mimeUnrender _ = decodeJpeg . BL.toStrict
 
@@ -63,6 +69,9 @@ instance Accept PNG where
 
 instance MimeRender PNG DynamicImage where
     mimeRender _ = imageToPng
+
+instance PngSavable a => MimeRender PNG (Image a) where
+    mimeRender _ = encodePng
 
 instance MimeUnrender PNG DynamicImage where
     mimeUnrender _ = decodePng . BL.toStrict
@@ -76,6 +85,9 @@ instance Accept TIFF where
 instance MimeRender TIFF DynamicImage where
     mimeRender _ = imageToTiff
 
+instance TiffSaveable a => MimeRender TIFF (Image a) where
+    mimeRender _ = encodeTiff
+
 instance MimeUnrender TIFF DynamicImage where
     mimeUnrender _ = decodeTiff . BL.toStrict
 
@@ -88,6 +100,9 @@ instance Accept RADIANCE where
 instance MimeRender RADIANCE DynamicImage where
     mimeRender _ = imageToRadiance
 
+instance a ~ PixelRGBF => MimeRender RADIANCE (Image a) where
+    mimeRender _ = encodeHDR
+
 instance MimeUnrender RADIANCE DynamicImage where
     mimeUnrender _ = decodeHDR . BL.toStrict
 
@@ -99,6 +114,9 @@ instance Accept TGA where
 
 instance MimeRender TGA DynamicImage where
     mimeRender _ = imageToTga
+
+instance TgaSaveable a => MimeRender TGA (Image a) where
+    mimeRender _ = encodeTga
 
 instance MimeUnrender TGA DynamicImage where
     mimeUnrender _ = decodeTga . BL.toStrict
