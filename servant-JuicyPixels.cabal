@@ -1,7 +1,7 @@
 name:                servant-JuicyPixels
 version:             0.2.0.0
 homepage:            https://github.com/tvh/servant-JuicyPixels
-license:             GPL-3
+license:             BSD3
 license-file:        LICENSE
 author:              Timo von Holtz
 maintainer:          tvh@tvholtz.de
