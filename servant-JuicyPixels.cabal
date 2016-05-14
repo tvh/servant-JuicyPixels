@@ -22,7 +22,7 @@ library
                      , bytestring
                      , http-media
                      , JuicyPixels >=3.2.5.3
-                     , servant >=0.4 && <0.7
+                     , servant >=0.4
   hs-source-dirs:      lib
   default-language:    Haskell2010
 
