@@ -18,7 +18,7 @@ source-repository HEAD
 
 library
   exposed-modules:     Servant.JuicyPixels
-  build-depends:       base >=4.7 && <4.14
+  build-depends:       base >=4.7 && <4.15
                      , bytestring
                      , http-media
                      , JuicyPixels >=3.2.5.3
